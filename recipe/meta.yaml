@@ -29,7 +29,7 @@ requirements:
     - python
     - setuptools
     - six >=1.11.0
-    - cheroot >=5.9.1
+    - cheroot >=6.2.4
     - portend >=2.1.1
 
 test:
