@@ -1,4 +1,4 @@
-{% set version = "18.6.0" %}
+{% set version = "18.8.0" %}
 
 package:
   name: cherrypy
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/C/CherryPy/CherryPy-{{ version }}.tar.gz
-  sha256: 56608edd831ad00991ae585625e0206ed61cf1a0850e4b2cc48489fb2308c499
+  sha256: 9b48cfba8a2f16d5b6419cc657e6d51db005ba35c5e3824e4728bb03bbc7ef9b
 
 build:
   number: 0
@@ -20,6 +20,7 @@ requirements:
     - python
     - pip
     - setuptools_scm
+    - wheel
   run:
     - python
     - more-itertools
@@ -30,7 +31,7 @@ requirements:
     - simplejson
     - routes >=2.3.1
     - pyopenssl
-    - pywin32  # [win]
+    - pywin32  # [win and py<310]
 
 test:
   imports:
@@ -41,10 +42,13 @@ test:
     - cherrypy.test
     - cherrypy.tutorial
   commands:
+    - pip check
     - cherryd -h
+  requires:
+    - pip
 
 about:
-  home: http://www.cherrypy.org
+  home: https://cherrypy.dev
   license: BSD-3-Clause
   license_file: LICENSE.md
   license_family: BSD
@@ -55,8 +59,7 @@ about:
     build any other object-oriented Python program. This results in smaller source
     code developed in less time.
   dev_url: https://github.com/cherrypy/cherrypy
-  doc_url: http://docs.cherrypy.org/en/latest
-  doc_source_url: https://github.com/cherrypy/cherrypy/blob/master/docs/index.rst
+  doc_url: https://docs.cherrypy.dev
 
 extra:
   recipe-maintainers:
