@@ -31,7 +31,7 @@ requirements:
     - simplejson
     - routes >=2.3.1
     - pyopenssl
-    - pywin32  # [win and py<310]
+    - pywin32 >=227   # [win and py<310]
 
 test:
   imports:
