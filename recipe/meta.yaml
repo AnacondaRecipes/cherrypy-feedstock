@@ -32,7 +32,6 @@ requirements:
     - jaraco.collections
     - pywin32 >=227   # [win and py<310]
     - importlib-metadata # [py<38]
-  run_constrained:
     - simplejson
     - routes >=2.3.1
     - pyopenssl
