@@ -33,9 +33,9 @@ requirements:
     - more-itertools
     - zc.lockfile
     - jaraco.collections
+    - pywin32 >=227   # [win and py<310]
   run_constrained:
     - python-memcached >=1.58
-    - pywin32 >=227   # [win and py<310]
     - routes >=2.3.1
 
 # fixture 'watcher_getter' not found (part of pytest-services package which is unavailable)
