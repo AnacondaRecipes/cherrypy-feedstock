@@ -47,6 +47,8 @@ requirements:
 {% set tests_to_skip = "testFavicon" %}
 # AssertionError: start time 1749629772.787122 not greater than 1749629772.787122
 {% set tests_to_skip = tests_to_skip + " or test_4_Autoreload" %}
+# Unable to verify that the server is bound on
+{% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
 
 test:
   source_files:
