@@ -23,9 +23,9 @@ requirements:
     - python
     - pip
     - setuptools >=45
-    - setuptools_scm >=7  # [pyt>=37]
-    - setuptools_scm <7  # [pyt<37]
-    - setuptools_scm_git_archive >=1.1  # [pyt<37]
+    - setuptools_scm >=7  # [py>=37]
+    - setuptools_scm <7  # [py<37]
+    - setuptools_scm_git_archive >=1.1  # [py<37]
     - toml
     - wheel
   run:
