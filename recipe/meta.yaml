@@ -63,7 +63,7 @@ test:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - cherryd -h
-    - pytest -v {{ ignore_tests }} -k "not ({{ tests_to_skip }})" cherrypy/test
+    - pytest -vvv {{ ignore_tests }} -k "not ({{ tests_to_skip }})" cherrypy/test
   requires:
     - pip
     - pytest
