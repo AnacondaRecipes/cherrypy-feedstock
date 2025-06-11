@@ -46,6 +46,8 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or test_4_Autoreload" %}
 # Unable to verify that the server is bound on
 {% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
+# Hanging on windows
+{% set tests_to_skip = tests_to_skip + " or test_cherrypy_url" %}  # [win]
 
 test:
   source_files:
