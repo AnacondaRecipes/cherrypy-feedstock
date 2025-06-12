@@ -66,7 +66,6 @@ test:
     - pytest
     - path
     - requests-toolbelt
-    - pywin32  # [win]
 
 about:
   home: https://cherrypy.dev
