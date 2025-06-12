@@ -33,10 +33,10 @@ requirements:
     - more-itertools
     - zc.lockfile
     - jaraco.collections
-    - pywin32 >=227   # [win and py<310]
   run_constrained:
     - python-memcached >=1.58
     - routes >=2.3.1
+    - pywin32 >=227   # [win and py<310]
 
 # fixture 'watcher_getter' not found (part of pytest-services package which is unavailable)
 {% set ignore_tests = "--deselect=test_session.py" %}
@@ -46,8 +46,6 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or test_4_Autoreload" %}
 # Unable to verify that the server is bound on
 {% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
-# Hanging on windows
-{% set tests_to_skip = tests_to_skip + " or test_cherrypy_url" %}  # [win]
 
 test:
   imports:
@@ -61,7 +59,8 @@ test:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - cherryd -h
-    - pytest -v {{ ignore_tests }} -k "not ({{ tests_to_skip }})" --pyargs cherrypy.test
+    # For some reason, the CI is not running tests on the Windows platform, although they pass locally.
+    - pytest -v {{ ignore_tests }} -k "not ({{ tests_to_skip }})" --pyargs cherrypy.test  # [unix]
   requires:
     - pip
     - pytest
