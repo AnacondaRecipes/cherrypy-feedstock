@@ -33,7 +33,7 @@ requirements:
     - more-itertools
     - zc.lockfile
     - jaraco.collections
-    - pywin32 >=227   # [win and py<310]
+    - pywin32 >=227  # [win and py<310]
   run_constrained:
     - python-memcached >=1.58
     - routes >=2.3.1
