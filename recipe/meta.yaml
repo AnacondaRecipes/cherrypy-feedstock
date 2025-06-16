@@ -37,7 +37,7 @@ requirements:
     - jaraco.collections
     - pywin32 >=227  # [win and py<310]
     - importlib-metadata  # [py<=37]
-    - pyOpenSSL
+    - pyopenssl
   run_constrained:
     # memcached_session
     - python-memcached >=1.58
