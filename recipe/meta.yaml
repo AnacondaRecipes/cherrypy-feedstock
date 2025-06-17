@@ -1,26 +1,31 @@
-{% set version = "18.9.0" %}
+{% set name = "CherryPy" %}
+{% set version = "18.10.0" %}
 
 package:
-  name: cherrypy
-  version: {{ version }}
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
 
 source:
-  url: https://pypi.org/packages/source/C/CherryPy/CherryPy-{{ version }}.tar.gz
-  sha256: 6b06c191ce71a86461f30572a1ab57ffc09f43143ba8e42c103c7b3347220eb1
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name|lower }}-{{ version }}.tar.gz
+  sha256: 6c70e78ee11300e8b21c0767c542ae6b102a49cac5cfd4e3e313d7bb907c5891
 
 build:
   number: 0
-  skip: true  # [py<36 or s390x]
+  skip: true  # [py<36]
+  script_env:
+    - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
   entry_points:
     - cherryd = cherrypy.__main__:run
-  script: {{ PYTHON }} -m pip install . --no-deps -vv --no-build-isolation
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - setuptools_scm >=3.5
+    - setuptools >=45
+    - setuptools_scm >=7  # [py>=37]
+    - setuptools_scm <7  # [py<37]
+    - setuptools_scm_git_archive >=1.1  # [py<37]
     - toml
     - wheel
   run:
@@ -30,13 +35,25 @@ requirements:
     - more-itertools
     - zc.lockfile
     - jaraco.collections
-    - pywin32 >=227   # [win and py<310]
-    - importlib-metadata # [py<38]
-    - simplejson
-    - routes >=2.3.1
+    - pywin32 >=227  # [win and py<310]
+    - importlib-metadata  # [py<=37]
     - pyopenssl
+  run_constrained:
+    # memcached_session
+    - python-memcached >=1.58
+    # routes_dispatcher
+    - routes >=2.3.1
+
+# fixture 'watcher_getter' not found (part of pytest-services package which is unavailable)
+{% set ignore_tests = "--deselect=test_session.py" %}
+# AssertionError: start time 1749629772.787122 not greater than 1749629772.787122
+{% set tests_to_skip = "test_4_Autoreload" %}
+# Unable to verify that the server is bound on
+{% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
 
 test:
+  source_files:
+    - cherrypy/favicon.ico
   imports:
     - cherrypy
     - cherrypy.lib
@@ -46,21 +63,29 @@ test:
     - cherrypy.tutorial
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - cherryd -h
+    # For some reason, the CI is not running tests on the Windows platform, although they pass locally.
+    - cp cherrypy/favicon.ico ${SP_DIR}/cherrypy/test/  # [unix]
+    - pytest -v {{ ignore_tests }} -k "not ({{ tests_to_skip }})" --pyargs cherrypy.test  # [unix]
   requires:
     - pip
+    - pytest
+    - path
+    - requests-toolbelt
 
 about:
   home: https://cherrypy.dev
   license: BSD-3-Clause
   license_file: LICENSE.md
   license_family: BSD
-  summary: Object-Oriented HTTP framework
+  summary: CherryPy is a pythonic, object-oriented web framework
   description: |
-    CherryPy is a pythonic, object-oriented web framework.
-    It allows developers to build web applications in much the same way they would
-    build any other object-oriented Python program. This results in smaller source
-    code developed in less time.
+    CherryPy allows developers to build web applications in much the same way
+    they would build any other object-oriented Python program.
+    This results in smaller source code developed in less time.
+    CherryPy is now more than ten years old and it is has proven to be very fast and stable.
+    It is being used in production by many sites, from the simplest to the most demanding.
   dev_url: https://github.com/cherrypy/cherrypy
   doc_url: https://docs.cherrypy.dev
 
