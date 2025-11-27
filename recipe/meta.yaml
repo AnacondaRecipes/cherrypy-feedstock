@@ -1,8 +1,5 @@
 {% set name = "CherryPy" %}
 {% set version = "18.10.0" %}
-{% set ignore_tests = "--deselect=test_session.py" %}
-{% set tests_to_skip = "test_4_Autoreload" %}
-{% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
 
 package:
   name: {{ name|lower }}
@@ -17,9 +14,9 @@ build:
   skip: true  # [py<36]
   script_env:
     - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - cherryd = cherrypy.__main__:run
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
@@ -48,8 +45,12 @@ requirements:
     - routes >=2.3.1
 
 # fixture 'watcher_getter' not found (part of pytest-services package which is unavailable)
+{% set ignore_tests = "--deselect=test_session.py" %}
 # AssertionError: start time 1749629772.787122 not greater than 1749629772.787122
+{% set tests_to_skip = "test_4_Autoreload" %}
 # Unable to verify that the server is bound on
+{% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
+
 test:
   source_files:
     - cherrypy/favicon.ico
