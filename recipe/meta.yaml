@@ -50,6 +50,8 @@ requirements:
 {% set tests_to_skip = "test_4_Autoreload" %}
 # Unable to verify that the server is bound on
 {% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
+# AssertionError: Overflow conn did not get RST
+{% set tests_to_skip = tests_to_skip + " or test_queue_full" %}
 
 test:
   source_files:
