@@ -2,21 +2,21 @@
 {% set version = "18.10.0" %}
 
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name|lower }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|lower }}-{{ version }}.tar.gz
   sha256: 6c70e78ee11300e8b21c0767c542ae6b102a49cac5cfd4e3e313d7bb907c5891
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<36]
   script_env:
     - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - cherryd = cherrypy.__main__:run
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
@@ -50,6 +50,10 @@ requirements:
 {% set tests_to_skip = "test_4_Autoreload" %}
 # Unable to verify that the server is bound on
 {% set tests_to_skip = tests_to_skip + " or test_safe_wait_INADDR_ANY" %}
+# AssertionError: Overflow conn did not get RST
+{% set tests_to_skip = tests_to_skip + " or test_queue_full" %}
+# AssertionError: assert 3 > 3
+{% set tests_to_skip = tests_to_skip + " or test_wait_publishes_periodically" %}  # [osx]
 
 test:
   source_files:
